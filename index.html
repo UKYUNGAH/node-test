@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cors사용</title>
+</head>
+<body>
+    <h1 id="sound"></h1>
+    <input id="name" type="text">
+    <button onclick="getSound()">api요청</button>
+</body>
+<script>
+    //옛날방법
+    // function getSound(){
+    //     const name = document.getElementById('name').value
+    //     fetch(`http://localhost:3000/sound/${name}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         console.log(data.sound)
+    //         document.getElementById('sound').innerHTML = data.sound
+    //     })
+    // }
+    // js에서 cors 없애고 실행하면 다시 에러남
+    async function getSound() {
+        try {
+            // 1. async 키워드 추가
+            const name = document.getElementById('name').value;
+
+            // 2. await 사용
+            const response = await fetch(`http://localhost:3000/sound/${name}`);
+
+            // HTTP 에러 처리
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // 3. await 사용
+            const data = await response.json();
+            console.log(data.sound);
+            document.getElementById('sound').innerHTML = data.sound;
+        } catch (error) {
+            // 에러 처리
+            console.error('Error fetching sound:', error);
+        }
+    }
+
+</script>
+</html>
